@@ -1,0 +1,249 @@
+@charset "utf-8";
+
+/* リセットCSS */
+*, *::before, *::after {
+    box-sizing: border-box; /* 余白を含めたサイズ計算にする */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased; /* 文字を滑らかにする */
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/* SHINee Official Color Theme - Green Enhanced */
+:root {
+    /* グリーン成分を強めた配色 */
+    --pearl-aqua: #79E0EE;         /* 公式パールアクア */
+    --shinee-mint: #48D1CC;        /* よりグリーンが強いミントターコイズ */
+    --mint-border: #A7EDE7;        /* 枠線用の淡いミント */
+    --mint-bg: #F0FFFE;            /* 背景用の極淡ミント */
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+    /* 背景も白ではなく、薄いグリーンへのグラデーションに */
+    background: linear-gradient(180deg, var(--mint-bg) 0%, #ffffff 100%);
+    background-attachment: fixed;
+    color: #2c3e50;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: var(--white);
+    /* グリーンを強調した濃密なグラデーション */
+    background: linear-gradient(135deg, #7FFFD4 0%, var(--pearl-aqua) 50%, var(--shinee-mint) 100%);
+    width: 100%;
+    max-width: 900px;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 30px 30px 0 0;
+    font-size: 2.4rem;
+    letter-spacing: 3px;
+    /* 影もグリーンを強く */
+    box-shadow: 0 10px 20px rgba(72, 209, 204, 0.3);
+}
+
+/* メインテーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed; /* これで列幅を固定してガタつきを防ぐ */
+}
+
+/* アルバム名（親）の行 */
+.album-row {
+    background-color: #fff;
+    cursor: pointer;
+    border-bottom: 2px solid var(--pearl-aqua);
+}
+
+.album-row:hover { background-color: var(--mint-bg); }
+
+.title-cell {
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* 形態リスト（子）を包む行 */
+.edition-container-row {
+    background-color: #f9f9f9;
+}
+
+/* 形態テーブル（中身） */
+.edition-table {
+    margin: 10px 0 10px 20px; /* 右にずらして親子感を出す */
+    width: calc(100% - 40px) !important;
+}
+
+.edition-item td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+/* 詳細情報（孫） */
+.extra-info-content {
+    background: #fff;
+    padding: 15px;
+    border: 1px dashed var(--pearl-aqua);
+    font-size: 0.9rem;
+    color: #666;
+}
+.track-list {
+    margin-top: 8px;
+    padding: 12px;
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    font-family: 'Courier New', Courier, monospace; /* 少しフォントを変えるとおしゃれ */
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+.benefit-list {
+    margin-top: 5px;
+    padding: 8px;
+    background: #fff9f0; /* 特典は少し暖色系の背景に */
+    border-left: 3px solid #e67e22; /* オレンジのアクセント線 */
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+/* ボタンのスタイル */
+.btn-tracks, .btn-details {
+    padding: 3px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    border: 1px solid var(--pearl-aqua);
+    margin-left: 5px;
+}
+.btn-tracks { background-color: #e0f2f1; color: #00796b; }
+.btn-details { background-color: #fff9c4; color: #f57f17; border-color: #fbc02d; }
+
+.btn-tracks:hover, .btn-details:hover { opacity: 0.8; }
+
+/* 中身の色分け */
+.track-bg { background-color: #f4fdfb !important; }
+.detail-bg { background-color: #fffdf5 !important; }
+
+.video-list {
+    margin-top: 5px;
+    padding: 10px;
+    background: #eefbff; /* 映像っぽく少しクールな水色 */
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #005a70;
+}
+
+
+/* コレクション率 */
+.stats-container {
+    width: 100%;
+    max-width: 900px;
+    background: white;
+    padding: 30px;
+    margin-top: -1px; /* ヘッダーとくっつける場合 */
+    border-left: 1px solid var(--mint-border);
+    border-right: 1px solid var(--mint-border);
+    text-align: center;
+}
+
+.stats-text {
+    font-size: 1.1rem;
+    color: var(--shinee-mint);
+    margin-bottom: 15px;
+}
+
+.percent-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* バーの土台（溝） */
+.progress-bg {
+    width: 100%;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    transition: width 1.5s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+}
+
+/* 伸びるバー本体 */
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pearl-aqua), var(--shinee-mint));
+    box-shadow: 0 0 10px rgba(72, 209, 204, 0.5);
+    transition: width 1s ease-in-out; /* 読み込み時にスッと伸びるアニメーション */
+}
+
+
+/* ソートフィルタリング部分 */
+.filter-bar-sticky {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    padding: 10px 0;
+    z-index: 100;
+    border-bottom: 2px solid #88d8c0;
+    margin-bottom: 20px;
+}
+
+.filter-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-controls select {
+    /* デフォルトの▼を消す魔法 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 2px solid #88d8c0;
+    background-color: white;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+/* マウスを乗せた時の動き */
+.filter-controls select:hover {
+    background-color: #88d8c0;
+    color: white;
+}
+
+/* 選択中のスタイル（お好みで） */
+.filter-controls select:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(136, 216, 192, 0.6);
+}

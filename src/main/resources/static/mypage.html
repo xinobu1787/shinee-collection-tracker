@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHINee Collection Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>My Collection Status</h1>
+    </header>
+
+    <main id="mypage-content" class="mypage-content">
+        <h2>Collection Progress</h2>
+
+        <div class="progress-container">
+            <div class="progress-bar-total" id="totalBar" style="width: 0%;">
+                <span class="bar-label">0%</span>
+            </div>
+        </div>
+
+        <div class="member-progress-grid">
+            <div class="member-box">
+                <div class="circle-progress circle-onew"><span class="kaomoji">⌒∇⌒</span></div>
+            </div>
+            <div class="member-box">
+                <div class="circle-progress circle-jonghyun"><span class="kaomoji">ㅎㅅㅎ</span></div>
+            </div>
+            <div class="member-box">
+                <div class="circle-progress circle-key"><span class="kaomoji">'ㅂ'</span></div>
+            </div>
+            <div class="member-box">
+                <div class="circle-progress circle-minho"><span class="kaomoji">ㅍ_ㅍ</span></div>
+            </div>
+            <div class="member-box">
+                <div class="circle-progress circle-taemin"><span class="kaomoji">δvδ</span></div>
+            </div>
+        </div>
+
+        <div class="regional-stats">
+            <div class="reg-item">
+                <div class="reg-bar-bg">
+                    <div class="reg-bar-fill bar-jp" style="width: 0%;">
+                        <span class="reg-flag">🇯🇵</span>
+                        <span class="reg-percent percent-jp">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="reg-item">
+                <div class="reg-bar-bg">
+                    <div class="reg-bar-fill bar-kr" style="width: 0%;">
+                        <span class="reg-flag">🇰🇷</span>
+                        <span class="reg-percent percent-kr">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+
+        <section class="glass-card">
+            <h2>Collection Badges</h2>
+            <div class="badge-grid">
+                <div class="badge-item lock" id="badge-hello">
+                    <div class="badge-icon-wrapper">
+                        <span class="material-symbols-outlined">waving_hand</span>
+                    </div>
+                    <span class="badge-name">Hello</span>
+                </div>
+
+                <div class="badge-item lock" id="badge-odd">
+                    <div class="badge-icon-wrapper">
+                        <span class="material-symbols-outlined">wb_sunny</span>
+                    </div>
+                    <span class="badge-name">Odd</span>
+                </div>
+
+                <div class="badge-item lock" id="badge-sol">
+                    <div class="badge-icon-wrapper">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                    </div>
+                    <span class="badge-name">Story of Light</span>
+                </div>
+
+                <div class="badge-item lock" id="badge-jonghyun-poet">
+                    <div class="badge-icon-wrapper">
+                        <span class="material-symbols-outlined">menu_book</span>
+                    </div>
+                    <span class="badge-name">Poet</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card">
+            <h2>Wishlist</h2>
+            <div id="wishlist-container" class="wishlist-grid">
+                <p class="loading-msg">読み込み中...</p>
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span class="material-symbols-outlined">diamond</span>
+            <span class="nav-label">トラッカー</span>
+        </a>
+        <a href="random.html" class="nav-item">
+            <span class="material-symbols-outlined">style</span>
+            <span class="nav-label">ランダム管理</span>
+        </a>
+        <a href="mypage.html" class="nav-item active">
+            <span class="material-symbols-outlined">person</span>
+            <span class="nav-label">マイページ</span>
+        </a>
+        <a href="contact.html" class="nav-item">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="nav-label">問合せ</span>
+        </a>
+    </nav>
+
+    <script src="/js/script.js"></script>
+    <script src="/js/mypage.js"></script>
+</body>
+
+</html>

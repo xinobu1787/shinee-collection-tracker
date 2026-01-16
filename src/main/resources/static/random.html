@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHINee Collection Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Random Collection Log</h1>
+    </header>
+
+    <main class="random-container">
+        <section class="glass-card">
+            <h2>Add New Item</h2>
+
+            <div class="input-group">
+                <label for="disc-select">Album</label>
+                <select id="disc-select" class="custom-select">
+                    <option value="">アルバムを選択してください</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="edition-select">Edition</label>
+                <select id="edition-select" class="custom-select" disabled onchange="loadCollection()">
+                    <option value="">先にアルバムを選んでください</option>
+                </select>
+            </div>
+
+            <div id="item-slots-container">
+                <div class="item-slot-card">
+                    <div class="input-group">
+                        <label>Member</label>
+                        <select class="member-select custom-select">
+                            <option value="">メンバーを選択してください</option>
+                            <option value="Group">集合</option>
+                            <option value="Onew">Onew</option>
+                            <option value="Jonghyun">Jonghyun</option>
+                            <option value="Key">Key</option>
+                            <option value="Minho">Minho</option>
+                            <option value="Taemin">Taemin</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>アイテム名</label>
+                        <input type="text" placeholder="例：トレカA" class="item-type-input custom-select">
+                    </div>
+
+                    <div class="input-group">
+                        <label>アイテム画像</label>
+                        <input type="file" class="slot-image-input" accept="image/*">
+                        <div class="preview-area" style="margin-top: 10px;">
+                            <img class="preview-img" src="" style="display:none; max-width: 100px; border-radius: 5px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <button type="button" id="add-slot-btn" class="secondary-btn">
+                <span class="material-symbols-outlined">add_circle</span>
+                アイテム枠を追加
+            </button>
+
+            <button type="button" id="save-all-btn" class="ok-btn">
+                データを保存する
+            </button>
+        </section>
+
+        <section class="collection-display glass-card">
+            <h2>Your Collection</h2>
+            <div id="collection-grid" class="collection-grid">
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span class="material-symbols-outlined">diamond</span>
+            <span class="nav-label">トラッカー</span>
+        </a>
+        <a href="random.html" class="nav-item active">
+            <span class="material-symbols-outlined">style</span>
+            <span class="nav-label">ランダム管理</span>
+        </a>
+        <a href="mypage.html" class="nav-item">
+            <span class="material-symbols-outlined">person</span>
+            <span class="nav-label">マイページ</span>
+        </a>
+        <a href="contact.html" class="nav-item">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="nav-label">問合せ</span>
+        </a>
+    </nav>
+
+    <script src="/js/random.js"></script>
+</body>
+
+</html>

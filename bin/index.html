@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>SHINee Collection Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>💎 SHINee Collection Tracker</h1>
+
+    <div class="filter-bar">
+        <select id="f-artist">
+            <option value="all">ALL ARTIST</option>
+            <option value="SHINee">SHINee</option>
+            <option value="Onew">Onew</option>
+            <option value="Jonghyun">Jonghyun</option>
+            <option value="Key">Key</option>
+            <option value="Minho">Minho</option>
+            <option value="Taemin">Taemin</option>
+        </select>
+
+        <select id="f-country">
+            <option value="all">ALL COUNTRY</option>
+            <option value="jp">Japan</option>
+            <option value="kr">Korea</option>
+        </select>
+
+        <select id="f-category">
+            <option value="all">ALL CATEGORY</option>
+            <option value="album">Album</option>
+            <option value="single">Single</option>
+        </select>
+    </div>
+
+    <div id="collection-app">
+        <p>Loading collection data...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

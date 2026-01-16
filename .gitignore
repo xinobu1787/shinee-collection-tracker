@@ -1,0 +1,47 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Custom settings ###
+# 環境変数や秘密情報（もし作成したら）
+.env
+application-local.properties
+application-secret.properties
+
+# OS固有のゴミ箱ファイル
+.DS_Store
+Thumbs.db
+
+# アップロードされた画像（本番環境ではRailwayのストレージやSupabaseを使うため、ローカルのテスト画像は上げない）
+src/main/resources/static/uploads/random/*
+!src/main/resources/static/uploads/random/.gitkeep

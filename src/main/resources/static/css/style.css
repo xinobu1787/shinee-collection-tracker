@@ -1,0 +1,964 @@
+@charset "utf-8";
+
+/* --- 1. 変数定義（一箇所にまとめ、重複を削除） --- */
+:root {
+    /* メインカラー */
+    --base-color: #88d8c0;
+    /* パールアクアグリーン */
+    --bg-color: #f8fcfb;
+    /* 全体の背景（より白に近いパステル） */
+
+    /* メンバーカラー（設計図のパステルのうすい色） */
+    --onew-color: #d1f2d1;
+    --jonghyun-color: #ffd1d1;
+    --key-color: #ffd1f0;
+    --minho-color: #d1e0ff;
+    --taemin-color: #fff9d1;
+
+    /* 共通設定 */
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --member-color: var(--base-color);
+    /* デフォルトはパールアクア */
+    --member-bg: var(--bg-color);
+    /* 透過カードの「正解」を定義 */
+    --glass-bg: rgba(255, 255, 255, 0.75); /* 透過度を0.75で統一 */
+    --glass-blur: blur(6px);              /* 背景のボカシ */
+    --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    /* 文字サイズの「正解」を定義 */
+    --fs-h1: 2rem;    /* ページメインタイトル */
+    --fs-h2: 1.5rem;   /* セクションタイトル（カードの見出し） */
+    --fs-body: 1rem;    /* 標準の文字 */
+    --fs-small: 0.8rem; /* 補足説明 */
+}
+
+/* --- 2. メンバーごとのテーマ（JSでbodyにクラスをつける想定） --- */
+body.theme-onew {
+    --member-color: #98fb98;
+    --member-bg: #f0fff0;
+}
+
+body.theme-jonghyun {
+    --member-color: #f091a0;
+    --member-bg: #fff0f2;
+}
+
+body.theme-key {
+    --member-color: #ffc0cb;
+    --member-bg: #fffafa;
+}
+
+body.theme-minho {
+    --member-color: #add8e6;
+    --member-bg: #f0f8ff;
+}
+
+body.theme-taemin {
+    --member-color: #fffacd;
+    --member-bg: #fffff0;
+}
+
+/* 全ページ共通：透過カードスタイル */
+.glass-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border) !important;
+    border-radius: 1.8rem !important; /* すべて1.8remで統一 */
+    box-shadow: var(--card-shadow) !important;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 全ページ共通：タイトルスタイル */
+h1 {
+    font-size: var(--fs-h1);
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+    text-align: center;
+}
+
+h2 {
+    font-size: var(--fs-h2);
+    font-weight: bold;
+    color: var(--member-color);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- 3. 全体レイアウト（レスポンシブの土台） --- */
+html {
+    font-size: 14px;
+    /* スマホ基準: 1rem = 14px */
+}
+
+@media screen and (min-width: 768px) {
+    html {
+        font-size: 16px;
+        /* PC基準: 1rem = 16px */
+    }
+}
+
+body {
+    background-color: var(--member-bg);
+    color: #333;
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.6;
+    transition: background-color 0.5s ease;
+    /* テーマ切り替え時のアニメーション */
+    padding-bottom: 5rem;
+    /* ボトムナビに被らないための余白 */
+}
+
+/* --- 4. 各パーツのスタイリング --- */
+
+/* ヘッダー */
+.main-header {
+    background: linear-gradient(to bottom, var(--base-color), var(--member-bg));
+    text-align: center;
+    padding: 2rem 0;
+}
+
+/* --- 4. スタイリッシュな1行フィルタ（labelなし・▽なし） --- */
+.filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1.5rem 1rem;
+    width: 95%;
+    max-width: 55rem;
+    margin: 1rem auto;
+}
+
+#filter-category-container select,
+.filter-group select {
+    appearance: none;
+    /* ▽矢印を消す */
+    -webkit-appearance: none;
+    background-color: white;
+    border: 1.5px solid var(--member-color);
+    border-radius: 2rem;
+    /* カプセル型 */
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
+    min-width: 8rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: all 0.2s ease;
+}
+
+#filter-category-container select:hover,
+.filter-group select:hover {
+    transform: translateY(-2px);
+    background-color: #f0fdfa;
+}
+
+/* カテゴリーコンテナ自体のレイアウト */
+#filter-category-container {
+    display: flex;
+    align-items: center;
+}
+
+/* labelは非表示にする（プレースホルダー的なoptionで代用するため） */
+#filter-category-container label {
+    display: none;
+}
+
+
+/* ディスクのタイル表示（Gridを使用） */
+.disc-grid {
+    display: grid !important;
+    /*gridに戻す */
+    /* 最小幅を少し広めの 22rem 程度に設定し、入り切らない分は1frで埋める */
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr)) !important;
+    gap: 1rem;
+    /* カード同士の間隔 */
+    padding: 1.5rem;
+    justify-content: center;
+    max-width: 1200px;
+    /* 広がりすぎないように制限 */
+    margin: 0 auto;
+}
+
+.disc-item {
+    background: white;
+    padding: 1.2rem 1.5rem;
+    /* 上下1.5rem、左右2.5remにして横長感を出す */
+    border-radius: 1.8rem;
+    /* 設計図の「楕円っぽい形」 */
+    border: 1px solid transparent;
+    box-shadow: var(--card-shadow);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    width: 100% !important;
+    /* グリッドの横幅いっぱいに広げる */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.disc-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--member-color);
+}
+
+.disc-title {
+    /* 全文表示を死守しつつ、どうしてもはみ出す時だけ自動で少し小さくする */
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    white-space: nowrap;
+    text-align: left;
+    flex: 1;           /* タイトル側が余白を埋めるようにする */
+}
+.disc-subtitle {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: right;
+    margin-left: 2rem; /* タイトルとの間に最低限の隙間を確保 */
+    white-space: nowrap;
+    flex: 0 0 auto;    /* サブタイトルは勝手に伸びないように */
+}
+
+/* --- 6. モーダル内の「横長BOX」UI --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* モーダルの中身の幅を調整 */
+#modal-body {
+    /* 一定の幅を保つようにする */
+    width: 38rem !important;   /* 幅を固定（PCでもスマホでもこの幅を目指す） */
+    max-width: 92vw;           /* ただし、画面幅より大きくなってはみ出さないように */
+    
+    /* 高さは中身（形態数）に合わせる */
+    height: auto;
+    max-height: 85vh;          /* 縦に長すぎると画面を突き抜けるので、85%まででスクロール */
+    overflow-y: auto;          /* 形態が多い時はモーダル内でスクロール */
+    background: white;
+    padding: 2rem;
+    border-radius: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* 中央に配置するための設定（親がFlexなら不要ですが念のため） */
+    margin: auto;
+}
+
+/* --- タイトルを1行にする設定 --- */
+.modal-header-section {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+}
+
+.modal-title-row {
+    display: flex;
+    align-items: baseline;      /* 文字の下を揃える */
+    gap: 1rem;
+    white-space: nowrap;        /* ★改行させない */
+    overflow: hidden;           /* はみ出し防止 */
+}
+
+.modal-main-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.modal-sub-title {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* 形態ごとの横長カード */
+.edition-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 0.5rem;
+    border: 2px solid var(--member-color);
+    border-radius: 1.2rem;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 詳細表示エリア（BOXの下に独立して表示） */
+.edition-detail {
+    width: 95%;
+    /* BOXより少しだけ狭くすると親子関係が見えやすい */
+    margin: 0 auto 1rem;
+    /* 中央寄せにして下に余白 */
+    padding: 0.5rem 1rem;
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    border-top: none;
+    /* BOXと繋がっているように見せるなら */
+    border-radius: 0 0 1rem 1rem;
+    /* 下だけ丸く */
+    font-size: 0.9rem;
+    line-height: 1.5;
+    animation: slideDown 0.3s ease-out;
+    /* ふわっと出す */
+}
+
+/* 詳細エリア内のリスト（トラックリストなど）のスタイルを整える */
+.edition-detail ul {
+    list-style: none;
+    /* ★これで「・」が消えます */
+    padding: 0;
+    /* 左側の余白をなくす */
+    margin: 0;
+    /* 外側の余白をなくす */
+}
+
+/* チェックあり（所持）の時の反転 */
+.edition-box:has(input:checked) {
+    background-color: var(--member-color);
+    color: #fff;
+}
+
+.edition-box:has(input:checked) .material-symbols-outlined {
+    color: #fff;
+    /* アイコンも白にする */
+}
+
+.edition-name {
+    font-weight: bold;
+    font-size: 1.05rem;
+    white-space: normal;  /* 1. テキストを折り返して良い設定にする */
+    flex-shrink: 1;       /* 2. ボタンを押し出さないように「縮む」ことを許可する */
+    margin-right: 0.5rem; /* 3. ボタンとの間に最低限の余白を作る */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 2行で止める */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    line-clamp: 2;
+}
+
+/* 右側のアイコンボタン群 */
+.edition-controls {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    margin-left: auto;   /* ★これで形態名が短くてもボタンは右端に固定される */
+}
+
+.btn-circle {
+    background: none;        /* 馴染みすぎないよう、薄いグレーを背景に */
+    border: 1px solid #ddd;    /* 境界線をはっきりさせる */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 少し浮き上がらせる */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem;
+    border-radius: 50%;
+}
+
+.btn-circle:hover {
+    background: rgba(136, 216, 192, 0.2);
+}
+
+/* 欲しいものボタンの基本スタイル */
+.wishlist-btn {
+    transition: all 0.3s ease;
+    color: #666; /* 未選択時は控えめな色 */
+}
+
+/* ウィッシュリストボタンがアクティブ（選択中）の時の色 */
+.wishlist-btn.active {
+    color: #ff9800; /* カートっぽくオレンジ、あるいはパステルアクアなどお好みで */
+    /* 背景色も変える場合はここに追加 */
+}
+
+
+
+/* ボトムナビゲーション（vhとremで固定） */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 5rem;
+    /* スマホで押しやすい高さ */
+    background: rgba(255, 255, 255, 0.95);
+    /* 少し透かして高級感を */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 2000;
+    padding-bottom: env(safe-area-inset-bottom);
+    /* iPhoneの画面下のバー対策 */
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7rem;
+    gap: 0.3rem;
+    transition: all 0.3s ease;
+}
+
+.nav-item.active {
+    color: var(--member-color);
+}
+
+.nav-item.active .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1;
+    /* 選択中だけアイコンを塗りつぶすこだわり */
+}
+
+.nav-label {
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+
+/* 共通アイコン設定 */
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        /* 2枚目の指示通り、細めの線で洗練された印象に */
+        'GRAD' 0,
+        'opsz' 24;
+    font-size: 1.8rem;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+
+/* トラックリスト：数字を少し薄くして洗練された印象に */
+.track-list {
+    font-family: 'monospace';
+    /* 数字を揃えるとかっこいい */
+    color: #444;
+    padding-left: 0.5rem;
+    margin-bottom: 0;      /* ★リストの下の余白をなくす */
+    margin-top: 0.5rem;    /* ★上のBOXとの間隔を少しだけ調整 */
+}
+
+.track-list li {
+    margin-bottom: 0.3rem;
+    border-bottom: 1px dashed #eee;
+    /* 薄い区切り線 */
+    padding-bottom: 0.2rem;
+}
+/* ★最後の行だけ点線を消す魔法のコード */
+.track-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* DISCごとの塊の余白 */
+.disc-unit {
+    margin-bottom: 2rem;
+    /* DISC間の余白 */
+}
+
+/* DISC 1, DISC 2 などの見出し */
+.disc-label {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: #666;
+    /* 少し控えめな色にするのがオシャレ */
+    border-bottom: 1px solid #eee;
+    /* 軽い仕切り線 */
+}
+
+/* 備考欄：少しだけ目立たせる */
+.remarks-box {
+    margin-top: 0.8rem;
+    padding: 0.5rem;
+    background: #fff9e6;
+    /* ほんのり黄色（注意書きっぽく） */
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+}
+
+
+
+/* --- 7. マイページ（My Collection Status）専用スタイル --- */
+
+.mypage-content {
+    padding: 1.5rem;
+    padding-bottom: 7rem; /* ボトムナビに被らないように調整 */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 横長プログレスバー */
+.progress-container {
+    background-color: #f0f0f0;
+    border-radius: 1.5rem;
+    height: 4.5rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); /* 内側に影をつけて凹凸感を出す */
+    margin: 1rem 0;
+}
+
+.progress-bar-total {
+    height: 100%;
+    background: linear-gradient(90deg, var(--base-color), var(--member-color));
+    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1); /* ヌルッと動くアニメーション */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.bar-label {
+    color: #fff;
+    font-size: 1.2rem;     /* 文字も大きく */
+    font-weight: 900;      /* かなり太めに */
+    letter-spacing: 0.05rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    z-index: 2;
+}
+
+/* メンバー別の円形グリッド */
+.member-progress-grid {
+    display: flex;
+    flex-wrap: wrap;       /* はみ出したら自動で改行 */
+    justify-content: center; /* これで2行目になっても中央に寄る */
+    gap: 2rem 1rem;        /* 縦2rem、横1remの間隔 */
+    margin: 2rem 0;
+    max-width: 100%;       /* 親要素を突き抜けないように */
+}
+
+.member-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 14px基準で3個並ぶように幅を調整（スマホ重視） */
+    width: calc(33.33% - 1rem); 
+    min-width: 80px;      /* 小さくなりすぎ防止 */
+}
+
+/* PCなどの広い画面では5個横並びに戻す（オプション） */
+@media screen and (min-width: 768px) {
+    .member-progress-grid {
+        display: flex !important;
+        /* 折り返しを禁止して、一列に強制 */
+        flex-wrap: nowrap !important; 
+        flex-direction: row !important;      /* 横並びを強制 */
+        justify-content: space-between !important; 
+        align-items: center !important;
+        gap: 0 !important; /* 円を大きくしたので間隔は狭めに */
+        width: 100% !important;
+        padding: 1.5rem 0;
+    }
+
+    .member-box {
+        /* 5等分の幅（20%）を確保しつつ、勝手に縮んだり伸びたりさせない */
+        flex: 1 1 20% !important;
+        max-width: 20% !important;
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 !important;
+    }
+
+    /* 4番目と5番目の「特別扱い」を完全に抹殺する */
+    .member-box:nth-child(4),
+    .member-box:nth-child(5) {
+        grid-column: auto !important;
+        margin-left: 0 !important;
+        margin-top: 0 !important;            /* 2行目に行こうとする力を消す */
+    }
+
+    /* 円のサイズを再度固定 */
+    .circle-progress {
+        width: 8rem !important; /* 好みの大きさに微調整してください */
+        height: 8rem !important;
+        max-width: 90% !important; /* ボックスからはみ出さないようにガード */
+    }
+}
+
+.circle-progress {
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 50%;
+    /* ↓ここが重要！JSから届く --percent を使って色を塗る設定 */
+    background: conic-gradient(
+        var(--member-color) 0%, 
+        var(--member-color) var(--percent), 
+        #f0f0f0 var(--percent), 
+        #f0f0f0 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.circle-progress::after {
+    content: "";
+    position: absolute;
+    width: 82%;
+    height: 82%;
+    background: white;
+    border-radius: 50%;
+}
+
+/* すでに定義済みのメンバーカラーを、円形バー専用の変数に橋渡しする */
+.circle-onew { --member-color: var(--onew-color); }
+.circle-jonghyun { --member-color: var(--jonghyun-color); }
+.circle-key { --member-color: var(--key-color); }
+.circle-minho { --member-color: var(--minho-color); }
+.circle-taemin { --member-color: var(--taemin-color); }
+
+.kaomoji {
+    position: relative;
+    z-index: 1;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #444;
+}
+
+/* 国別（Regional）のスタイル */
+.regional-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* 2つの国を左右に振り分け */
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem; /* 下のバッジカードとの間に余白を強制的に作る */
+}
+
+/* 各国の行（ここで幅を半分にする） */
+.reg-item {
+    display: flex;
+    align-items: center;
+    position: relative;  /* 国旗配置の基準 */
+    color: #666;
+    flex: 1; /* 左右均等の幅に広げる */
+    min-height: 3rem;
+}
+
+/* バーの背景 */
+.reg-bar-bg {
+    flex: 1;
+    height: 2.8rem;
+    background: #f0f0f0;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    display: flex; /* 中の要素（バー本体）を制御 */
+}
+
+/* 伸びるバー本体 */
+.reg-bar-fill {
+    height: 100%;
+    background: var(--base-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ★これで左に国旗、右に数字を振る */
+    padding: 0 1rem;       /* バーの両端に余白 */
+    transition: width 1s ease-in-out;
+    min-width: 5rem;       /* 低％でも国旗と数字が重ならない最小幅 */
+}
+
+/* バーの中の国旗（絶対配置でバーの上に重ねる） */
+.reg-flag {
+    left: 0.8rem;    /* バーの左端から少し浮かせる */
+    z-index: 10;     /* バーより手前に表示 */
+    font-size: 1.4rem;
+    pointer-events: none;
+    flex-shrink: 0; /* バーが短くなっても国旗が潰れないように */
+}
+
+/* バーの中の数字 */
+.reg-percent {
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* バッジを並べるコンテナ */
+.badge-grid {
+    display: flex;             /* 横並びにする */
+    flex-wrap: wrap;          /* 幅がいっぱいになったら折り返す */
+    gap: 1.5rem;              /* バッジ同士の間隔（remでスマホ対応） */
+    justify-content: center;   /* 中央寄せ（お好みで） */
+    padding: 1rem;
+    width: 100%;
+}
+
+/* バッジ全体のスタイル */
+.badge-item {
+    transition: all 0.5s ease;
+    display: flex;
+    flex: 0 0 4.5rem;         /* バッジが勝手に伸び縮みしないように固定幅 */
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* 鍵がかかっている時：モノクロ＆薄い */
+.badge-item.lock {
+    filter: grayscale(1);
+    opacity: 0.2;
+}
+
+/* 解放された時：カラー＆浮き出し */
+.badge-item.unlocked {
+    filter: grayscale(0);
+    opacity: 1;
+    color: var(--base-color);
+    animation: badgePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ジョンヒョン専用バッジが解放された時の色（ピンク） */
+.badge-item.unlocked#badge-jonghyun-poet {
+    color: var(--jonghyun-color);
+}
+
+@keyframes badgePop {
+    0% { transform: scale(0.5); rotate: -10deg; }
+    70% { transform: scale(1.1); rotate: 5deg; }
+    100% { transform: scale(1); rotate: 0deg; }
+}
+
+/* マイページ用のウィッシュリストグリッド */
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); /* スマホでも横並びになるサイズ */
+    gap: 1rem;
+    padding: 0.5rem 0;
+    margin-top: 1rem;
+}
+
+/* ウィッシュリスト内のミニカード */
+.wish-item {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1rem;
+    border: 1px solid #e0f7f4; /* ほのかにSHINeeカラー */
+    box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.wish-item:hover {
+    transform: translateY(-3px);
+}
+
+.artist-name {
+    display: block;
+    font-size: 0.7rem;
+    color: #00c7b1; /* メンバーカラーやブランドカラー */
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.edition-name-mp {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.2;
+}
+
+.edition-tag {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    background: #f0f0f0;
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.5rem;
+    color: #666;
+}
+
+
+/*---- 問い合わせページ ----*/
+
+/* お問い合わせ全体のコンテナ */
+.contact-content {
+    padding: 1.5rem;
+    padding-bottom: 6rem; /* ナビに被らないよう余裕を */
+    background: linear-gradient(to bottom, #f0fdfc, #fff); /* ほんのりSHINeeカラー */
+    min-height: 100vh;
+}
+
+/* FAQのアコーディオン */
+.faq-item {
+    border-bottom: 1px solid #e0f7f5;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-item summary {
+    padding: 1rem 0;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.faq-item summary:hover {
+    color: #00c7b1;
+}
+
+/* フォーム・保存ボタン */
+.ok-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #00c7b1, #00b3a0);
+    color: #fff;
+    border: none;
+    border-radius: 3rem; /* 丸みのあるボタン */
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 199, 177, 0.3);
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.ok-btn:active {
+    transform: scale(0.98); /* 押した時に少し凹む演出 */
+}
+
+
+/* フォームの入力欄もスマホで押しやすく */
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem; /* 16px以上にするとiPhoneでズームされない */
+}
+
+/* フォーム送信後の挙動　*/
+
+.toast-message {
+    visibility: hidden; /* 通常は隠しておく */
+    min-width: 250px;
+    background-color: #00c7b1; /* SHINeeカラー */
+    color: #fff;
+    text-align: center;
+    border-radius: 2rem;
+    padding: 1rem;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: 5rem; /* ナビの上に表示 */
+    transform: translateX(-50%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 表示された時のアニメーション */
+.toast-message.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 5rem; opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { bottom: 5rem; opacity: 1; }
+    to { bottom: 0; opacity: 0; }
+}
+
+
+/*---- ランダム管理ページ ----*/
+
+.random-container {
+    padding: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 6rem; /* 下部ナビに被らないように */
+}
+
+.input-group {
+    margin-bottom: 1.2rem;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+}
+
+/* スロット（1つ1つの入力セット）のスタイル */
+.item-slot {
+    background: #f0faff; /* ほんのりSHINeeカラー */
+    padding: 1rem;
+    border-radius: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px dashed #79E5E1;
+}
+
+/* gridエリア全体の調整 */
+.collection-grid {
+    display: grid;
+    /* 画面幅に合わせて自動で列数を変える魔法の1行 */
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); 
+    gap: 1.5rem;
+    padding: 1rem;
+    width: 100%;
+}
+
+/* 各カードの調整 */
+.collection-item {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px); /* 流行りのグラスモーフィズム */
+    border-radius: 1rem;
+    padding: 0.8rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+/* 画像が枠からはみ出さないように固定 */
+.item-img-wrapper {
+    width: 100%;
+    aspect-ratio: 2 / 3; /* トレカらしい比率を維持 */
+    overflow: hidden;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.item-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 画像の比率を壊さず枠いっぱいに表示 */
+}
