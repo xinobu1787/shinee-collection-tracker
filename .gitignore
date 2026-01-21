@@ -45,3 +45,6 @@ Thumbs.db
 # アップロードされた画像（本番環境ではRailwayのストレージやSupabaseを使うため、ローカルのテスト画像は上げない）
 src/main/resources/static/uploads/random/*
 !src/main/resources/static/uploads/random/.gitkeep
+
+bin/
+lib/
