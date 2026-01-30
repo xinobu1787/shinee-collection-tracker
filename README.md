@@ -43,31 +43,14 @@ SHINeeのCD・グッズコレクションを管理・可視化するための個
 - **柔軟な拡張性**: 
   「形態マスタ」と「ランダムアイテムマスタ」を切り出すことで、1つのCDに対して複数の特典アイテム（トレカ等）を紐付けられる 1:対:多 の関係を構築しています。
 
-## 🏗 システム構成 (画像アップロード)
+## 🏗 システム構成 (画像アップロードフロー)
+PaaS環境でのデータ永続化課題を解決するため、以下のフローで画像を管理しています。
 
-PaaS環境でのデータ永続化課題を解決するため、外部ストレージを組み合わせた構成を採用しています。
-
-```mermaid
-graph TD
-    subgraph Client_Side
-        UI[Frontend: Vanilla JS]
-    end
-
-    subgraph Backend_Railway
-        Java[Backend: Spring Boot]
-    end
-
-    subgraph Cloud_Storage_DB
-        S3[Supabase Storage: Images]
-        DB[(Supabase DB: PostgreSQL)]
-    end
-
-    UI -->|1. 画像アップロード| Java
-    Java -->|2. API経由で保存| S3
-    S3 --|3. 公開URLを返却| Java
-    Java -->|4. URLを保存| DB
-    UI --|5. URLを取得して表示| DB
-```
+1. **Frontend (Vanilla JS)**: ユーザーが画像を選択し、バックエンドへ送信。
+2. **Backend (Spring Boot)**: 受け取った画像を **Supabase Storage** へAPI経由で転送。
+3. **Supabase Storage**: 画像を保存し、固有の **公開URL** をバックエンドに返却。
+4. **Database (PostgreSQL)**: 返却された **公開URL** をレコードとして保存。
+5. **Display**: フロントエンドがDBからURLを取得し、画像を表示。
 
 ## 💎 こだわりポイント
 
