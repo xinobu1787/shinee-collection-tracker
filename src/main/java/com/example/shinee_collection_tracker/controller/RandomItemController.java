@@ -64,7 +64,7 @@ public class RandomItemController {
                 item.setMemberName(memberNames.get(i));
 
                 // ★重要：以前の相対パス "/uploads/..." ではなく、
-                // Supabaseから返ってきた「フルURL」をそのままDBに保存します！
+                // Supabaseから返ってきた「フルURL」をそのままDBに保存する
                 item.setImageUrl(publicUrl);
 
                 randomItemRepository.save(item); // ここでDBに刻まれる！
